@@ -77,7 +77,7 @@ if not package.loaded['radio.blocks.sinks.portaudio'] then
         const char *Pa_GetErrorText(PaError errorCode);
     ]]
 end
-local libportaudio_available, libportaudio = platform.load({"portaudio", "libportaudio.so.2"})
+local libportaudio_available, libportaudio = platform.load({"libportaudio.so.2.0.0", "libportaudio.so.2", "libportaudio.so.2"})
 
 function PortAudioSource:initialize()
     -- Check library is available

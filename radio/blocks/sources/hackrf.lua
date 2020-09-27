@@ -73,6 +73,7 @@ if not package.loaded['radio.blocks.sinks.hackrf'] then
 
         typedef int (*hackrf_sample_block_cb_fn)(hackrf_transfer* transfer);
 
+
         const char* hackrf_error_name(enum hackrf_error errcode);
 
         int hackrf_init(void);
@@ -105,7 +106,12 @@ if not package.loaded['radio.blocks.sinks.hackrf'] then
         uint32_t hackrf_compute_baseband_filter_bw(const uint32_t bandwidth_hz);
     ]]
 end
-local libhackrf_available, libhackrf = pcall(ffi.load, "hackrf")
+
+-- local libhackrf_available, libhackrf = pcall(ffi.load, "hackrf")
+local libhackrf_available, libhackrf = platform.load({"libhackrf.so.0.5.0", "libhackrf.so.0", "libhackrf.so"})
+
+print("libhackrf available:", libhackrf_available)
+print("libhackrf:", libhackrf) -- Some internal load address.
 
 function HackRFSource:initialize()
     -- Check library is available

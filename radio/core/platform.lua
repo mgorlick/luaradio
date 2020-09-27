@@ -267,8 +267,12 @@ end
 
 -- Platform FFI load library helper
 platform.load = function (names)
+    local profile = os.getenv("GUIX_ENVIRONMENT") -- Executing in a guix environment
+    if (profile == nil or profile == "") then
+      profile = os.getenv("GUIX_PROFILE")         -- Executing in a guix profile
+    end
     for _, name in ipairs(names) do
-        local lib_available, lib = pcall(ffi.load, name)
+        local lib_available, lib = pcall(ffi.load, profile .. "/lib/" .. name)
         if lib_available then
             return true, lib
         end
@@ -286,9 +290,10 @@ platform.time_us = function ()
 end
 
 -- Load acceleration libraries
-platform.features["liquid"], platform.libs["liquid"] = platform.load({"liquid", "libliquid.so.2d", "libliquid.so.1d"})
-platform.features["volk"], platform.libs["volk"] = platform.load({"volk", "libvolk.so.2.3", "libvolk.so.1.4", "libvolk.so.1.3"})
-platform.features["fftw3f"], platform.libs["fftw3f"] = platform.load({"fftw3f", "libfftw3f.so.3"})
+platform.features["liquid"], platform.libs["liquid"] = platform.load({"libliquid.so"})
+platform.features["volk"], platform.libs["volk"] = platform.load({"libvolk.so.2.3", "libvolk.so"})
+platform.features["fftw3f"], platform.libs["fftw3f"] =
+  platform.load({"libfftw3f.so.3.5.8", "libfftw3f.so.3", "libfftw3f.so"})
 
 -- Look up library versions
 if platform.features.liquid then

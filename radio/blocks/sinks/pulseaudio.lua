@@ -79,7 +79,7 @@ if not package.loaded['radio.blocks.sources.pulseaudio'] then
         const char* pa_strerror(int error);
     ]]
 end
-local libpulse_available, libpulse = platform.load({"pulse-simple", "libpulse-simple.so.0"})
+local libpulse_available, libpulse = platform.load({"libpulse-simple.so.0.1.1", "libpulse-simple.so.0", "libpulse-simple.so"})
 
 function PulseAudioSink:initialize()
     -- Check library is available
